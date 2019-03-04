@@ -1,0 +1,22 @@
+{
+  "name": "listing",
+  "version": "1.0.0",
+  "description": "Lists Item details from MongoDb Database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "mongodb",
+    "mongoose",
+    "demo"
+  ],
+  "author": "Snigdho Pritam Neog",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.17"
+  }
+}
