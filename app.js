@@ -18,8 +18,12 @@ var listingSchema = new mongoose.Schema({
 
 var Listing = mongoose.model("Listing", listingSchema);
 
-app.get("/" + id, (req, res) => {
+app.get("/",(req,res) => {
     return JSON.stringify(res);
+})
+
+app.get("/" + id, (req, res) => {
+    return res.filter(x => x.id == id);
 });
 
 app.post("/" + id, (req, res) => {
