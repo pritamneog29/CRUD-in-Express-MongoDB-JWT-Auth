@@ -6,7 +6,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var mongoose = require("mongoose");
-mongoose.Promise = global.Promise; mongoose.connect("mongodb://localhost:27017/node-demo");
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://localhost:27017/node-demo");
 
 var listingSchema = new mongoose.Schema({
     id: String,
