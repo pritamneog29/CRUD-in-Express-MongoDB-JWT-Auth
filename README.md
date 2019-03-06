@@ -21,7 +21,7 @@ mongod --dbpath "path of the folder"
 */listings/
 */listings/:id
 
-#DB attributes
+# DB attributes
 Name,Image,Details,Segment.
 
 
