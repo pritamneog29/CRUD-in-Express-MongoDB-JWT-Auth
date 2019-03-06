@@ -6,6 +6,7 @@ JWT used for authentication based on token
 node app.js
 
 # Point mongoDB to save in a specific local folder
-Go to mongoDB installation path, usually "C:\Program Files\MongoDB\Server\4.0\bin" and run the command below
+Go to mongoDB installation path, usually "C:\Program Files\MongoDB\Server\4.0\bin" and run the command below:
+
 mongod --dbpath "path of the folder"
 
