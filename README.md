@@ -14,7 +14,9 @@ Go to mongoDB installation path, usually "C:\Program Files\MongoDB\Server\4.0\bi
 mongod --dbpath "path of the folder"
 
 *Go to url "/users/register" and register a user by providing 'name', 'email' and 'password' inside body.
+
 *Authenticate the user to make use of the APIs by providing the registered email and password inside the body, url "/users/authenticate".
+
 *Provide the token received through the response from authentication inside 'x-access-token' and use the services.
 
 # API paths
