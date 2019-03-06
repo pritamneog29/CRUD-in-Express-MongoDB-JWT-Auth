@@ -1,63 +1,67 @@
-var express = require("express");
-var app = express();
-var port = 3000;
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const express = require("express");
+const lists = require('./Routes/listing');
+const users = require('./Routes/users');
+const app = express();
+const port = 3000;
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+var jwt = require('jsonwebtoken');
 
-var mongoose = require("mongoose");
+// jwt secret token
+app.set('secretKey', 'nodeRestApi');
+
+// DB connection
+const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/node-demo");
+mongoose.connect('mongodb://localhost/Listing', { useNewUrlParser: true });
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var listingSchema = new mongoose.Schema({
-    id: String,
-    Name: String,
-    Image: String,
-    Details: String,
-    Segment: String
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('/', function (req, res) {
+    res.json({ "tutorial": "Build REST API with node.js" });
 });
 
-var Listing = mongoose.model("Listing", listingSchema);
+// public route
+app.use('/users', users);
 
-app.get("/",(req,res) => {
-    return JSON.stringify(res);
-})
+// private route
+app.use('/listings', validateUser, lists);
 
-app.get("/" + id, (req, res) => {
-    return res.filter(x => x.id == id);
+app.get('/favicon.ico', function (req, res) {
+    res.sendStatus(204);
 });
 
-app.post("/" + id, (req, res) => {
-    var myData = new Listing(req.body);
-    myData.save()
-        .then(item => {
-            res.send("Listing Added");
-        })
-        .catch(err => {
-            res.status(400).send("Unable to save to database");
-        });
+// user validation
+function validateUser(req, res, next) {
+    jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function (err, decoded) {
+        if (err) {
+            res.json({ status: "error", message: err.message, data: null });
+        } else {
+            // add user id to request
+            req.body.id = decoded.id;
+            next();
+        }
+    });
+}
+
+// express doesn't consider not found 404 as an error so we need to handle 404 explicitly
+// handle 404 error
+app.use(function (req, res, next) {
+    let err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
-app.delete("/" + id, (req, res) => {
-    var myData = new Listing(req.body);
-    myData.delete()
-        .then(item => {
-            res.send("Listing deleted");
-        })
-        .catch(err => {
-            res.status(400).send("Unable to save to database");
-        });
-});
+// handle errors
+app.use(function (err, req, res, next) {
+    console.log(err);
 
-app.put("/"+id, (req, res)=>{
-    var myData = new Listing(req.body);
-    myData.put()
-        .then(item => {
-            res.send("Listing Added");
-        })
-        .catch(err => {
-            res.status(400).send("Unable to save to database");
-        });
+    if (err.status === 404)
+        res.status(404).json({ message: "Not found" });
+    else
+        res.status(500).json({ message: "Something looks wrong :( !!!" });
 });
 
 app.listen(port, () => {
