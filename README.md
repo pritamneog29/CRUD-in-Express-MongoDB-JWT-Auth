@@ -2,6 +2,9 @@
 CRUD operation using NodeJs Express api on a MongoDB database residing locally.
 JWT used for authentication based on token
 
+# Initial Setup
+npm install
+
 # Run Application
 node app.js
 
