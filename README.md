@@ -17,7 +17,7 @@ mongod --dbpath "path of the folder"
 *Authenticate the user to make use of the APIs by providing the registered email and password inside the body, url "/users/authenticate".
 *Provide the token received through the response from authentication inside 'x-access-token' and use the services.
 
-#API paths
+# API paths
 */listings/
 */listings/:id
 
